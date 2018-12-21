@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(YouGL)
+project(Subverse)
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_LIBRARIES -lstdc++fs)
 
@@ -33,7 +33,6 @@ set(SOURCES
     src/States/StatePlaying.cpp
     src/Editor/EditorView.cpp
     src/Editor/BoundingBox.cpp
-    #src/Editor/#GeoOctree.cpp#
     src/Editor/GeoOctree.cpp
     src/Editor/Grid.cpp
     src/Editor/OldFormat/OldFormatUtil.cpp
@@ -68,5 +67,18 @@ target_include_directories("glad" PRIVATE "${DEP_DIR}")
 target_include_directories(${PROJECT_NAME} PRIVATE "${DEP_DIR}")
 target_link_libraries(${PROJECT_NAME} "glad" "${CMAKE_DL_LIBS}")
 
+# NativeFileDialog (for linux compilation)
+set(LIB_DIR "${CMAKE_SOURCE_DIR}/lib")
 
+# NativeFileDialog utilizes GTK+ libraries to compile
+# Use the package PkgConfig to detect GTK+ headers/library files
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+include_directories(${GTK3_INCLUDE_DIRS})
+link_directories(${GTK3_LIBRARY_DIRS})
+
+# Link NFD with the executable
+target_link_libraries(${PROJECT_NAME} ${LIB_DIR}/libnfd.a ${GTK3_LIBRARIES})
+
+# Link SFML libraries & its dependancies with the executable
 target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})

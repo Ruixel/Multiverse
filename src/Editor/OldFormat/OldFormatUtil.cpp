@@ -74,7 +74,6 @@ namespace OldFormat
 
 	std::optional<std::string> loadFromFilesystem()
 	{
-        /*
 		// Open prompt
 		nfdchar_t *outPath = nullptr;
 		std::string curPath = fs::current_path().append("cy_files").string();
@@ -89,11 +88,14 @@ namespace OldFormat
 			content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
 
 			return content;
-		}*/
+		}
+
+		/*
         std::ifstream ifs("cy_files/Downtown Tale.cy");
         std::string content;
         content.assign(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
         return content;
+        */
 
 		return {};
 	}
@@ -113,7 +115,7 @@ namespace OldFormat
             // If # and not in a string
             if ((levelCode.at(charPos) == '#' && !isInString) || charPos == levelCode.length() - 3) {
                 if (charPos != 1) {
-                    std::size_t nameStart = levelCode.find(":", groupStart);
+                    std::size_t nameStart = levelCode.find(':', groupStart);
                     std::string name = levelCode.substr(groupStart + 1, nameStart - groupStart - 1);
                     std::string contents = levelCode.substr(nameStart + 2, charPos - nameStart - 4);
 
