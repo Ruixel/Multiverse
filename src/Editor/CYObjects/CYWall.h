@@ -7,8 +7,9 @@
 class CYWall : virtual public CYGeneric
 {
 public:
-	// Create wall from OldFormat/Regex loader
-	CYWall(std::smatch& matchGroups);
+	CYWall(Property::Position startPosition, Property::Position endPosition,
+		Property::Material frontMaterial, Property::Material backMaterial,
+		u8 floor, u8 height);
 
 	virtual void createMesh(const WorldTextures& wTex);
 

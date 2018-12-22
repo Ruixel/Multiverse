@@ -5,39 +5,6 @@
 
 namespace OldFormat
 {
-    std::optional<std::string> loadFromWebsite(int gameNumber)
-    {
-        std::cout << "Loading Game #" << gameNumber << '\n';
-
-        // Setup connection
-        sf::Http http;
-        http.setHost("http://www.challengeyou.com/");
-        std::cout << "Initialising connection to www.challengeyou.com" << '\n';
-
-        // Setup request
-        sf::Http::Request request;
-        request.setMethod(sf::Http::Request::Get);
-        std::string uri = "ChallengeFiles/Maze/Maze" + std::to_string(gameNumber);
-        request.setUri(uri);
-        std::cout << "Sending request to game number #" << gameNumber << '\n';
-
-        // Send GET Request
-        sf::Http::Response response = http.sendRequest(request);
-
-        // Check if it's a success (200)
-        if (response.getStatus() != 200)
-        {
-            std::cout << "FAILED, exited with status: " << response.getStatus() << '\n';
-            return {};
-
-        }
-        else {
-            std::cout << "Loading... \n" << std::endl;
-        }
-
-        return response.getBody();
-    }
-
 	// Requires an Apache server setup that behaves just like the CY server
 	std::optional<std::string> loadFromLocalhost(int gameNumber)
 	{

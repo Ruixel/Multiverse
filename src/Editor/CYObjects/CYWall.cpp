@@ -1,26 +1,15 @@
 #include "CYWall.h"
 
-CYWall::CYWall(std::smatch & matchGroups)
-{
-	auto displacement = RegexExtractor::extractVector(matchGroups, 1);
-	startPosition = RegexExtractor::extractVector(matchGroups, 3);
-	endPosition = { displacement.x + startPosition.x,
-		displacement.y + startPosition.y };
-
-	//Texture
-	frontMaterial = RegexExtractor::extractMaterial(matchGroups, 5, RegexExtractor::TextureType::WallTex);
-	backMaterial = RegexExtractor::extractMaterial(matchGroups, 7, RegexExtractor::TextureType::WallTex);
-
-	//Height and floor
-	if (matchGroups[10] != "") {
-		height = (u8)std::stoi(matchGroups[9].str());
-		floor = (u8)std::stoi(matchGroups[10].str());
-	}
-	else {//Old versions have no wall height
-		height = 1;
-		floor = (u8)std::stoi(matchGroups[9].str());
-	}
-}
+CYWall::CYWall(Property::Position startPosition, Property::Position endPosition,
+		Property::Material frontMaterial, Property::Material backMaterial,
+		u8 floor, u8 height)
+    : startPosition(startPosition)
+    , endPosition(endPosition)
+    , frontMaterial(frontMaterial)
+    , backMaterial(backMaterial)
+    , floor(floor)
+    , height(height)
+{}
 
 void CYWall::createMesh(const WorldTextures& wTex)
 {

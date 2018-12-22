@@ -7,9 +7,9 @@
 class CYPlat : virtual public CYGeneric
 {
 public:
-	// Create from OldFormat/Regex loader
-	CYPlat(std::smatch& matchGroups);
-
+    // Create platform with given properties
+    CYPlat(Property::Position position, Property::Material material,
+    		u8 floor, u8 height, u8 size);
 	virtual void createMesh(const WorldTextures& wTex);
 
 	virtual Mesh& getMesh();
