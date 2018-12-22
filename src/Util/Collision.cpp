@@ -260,7 +260,7 @@ void Collision::eSpace::checkCollision(P_CollisionPacket* pkg, const CPolygon& c
 				edge = p_2 - p_1;
 				baseToVertex = p_1 - pkg->e_origin;
 				edgeSquaredLength = glm::length2(edge);
-				edgeDotVelocity = glm::dot(edge, pkg->e_velocityN);
+				edgeDotVelocity = glm::dot(edge, pkg->e_velocity);
 				edgeDotOriginToVertex = glm::dot(edge, baseToVertex);
 
 				// Quadratic parameters
@@ -268,7 +268,7 @@ void Collision::eSpace::checkCollision(P_CollisionPacket* pkg, const CPolygon& c
 				a = (edgeSquaredLength * -velocityLengthSquared) +
 					(edgeDotVelocity * edgeDotVelocity);
 				// B = ||edge||^2 * 2(vel . baseToVertex) - 2((edge . vel)(edge . baseToVertex)
-				b = (edgeSquaredLength * (2.f * glm::dot(pkg->e_velocityN, baseToVertex))) -
+				b = (edgeSquaredLength * (2.f * glm::dot(pkg->e_velocity, baseToVertex))) -
 					(2.f * edgeDotVelocity * edgeDotOriginToVertex);
 				// C = ||edge||^2 * (1 - ||baseToVertex||^2) + (edge . baseToVertex)^2
 				c = (edgeSquaredLength * (1.f - glm::length2(baseToVertex))) +

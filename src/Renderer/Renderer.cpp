@@ -57,7 +57,7 @@ void Renderer::renderScene(const Camera& camera)
     int drawCalls = 0;
     for (auto renderData : m_renderData) {
         renderData->bind();
-        glDrawElements(renderData->getMode(), renderData->getIndicesCount(), GL_UNSIGNED_INT, 0);
+        glDrawElements(renderData->getMode(), renderData->getIndicesCount(), GL_UNSIGNED_INT, nullptr);
         //std::cout << "Call: " << drawCalls++ << " Indices: " << renderData->getIndicesCount() << '\n';
     }
 
@@ -97,10 +97,10 @@ void Renderer::initWindow()
     settings.minorVersion = 3;
     settings.depthBits = 24;
     settings.stencilBits = 8;
-    m_window.create({ 1280, 720 }, "YouGL", sf::Style::Close, settings);
+    m_window.create({ 1280, 720 }, "Multiverse", sf::Style::Close, settings);
 
-    //m_window.setVerticalSyncEnabled(true);
-	m_window.setFramerateLimit(60);
+    m_window.setVerticalSyncEnabled(true);
+	//m_window.setFramerateLimit(60);
 }
 
 void Renderer::initGL()
