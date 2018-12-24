@@ -31,8 +31,7 @@ set(SOURCES
     src/Input/KeyboardController.cpp
     src/ResourceManager/ResourceHolder.cpp
     src/States/StatePlaying.cpp
-    src/Editor/EditorView.cpp
-    src/Editor/BoundingBox.cpp
+        src/Editor/BoundingBox.cpp
     src/Editor/GeoOctree.cpp
     src/Editor/Grid.cpp
     src/Editor/OldFormat/OldFormatUtil.cpp
@@ -49,7 +48,7 @@ set(SOURCES
     src/Renderer/OpenGLErrorCheck.cpp
     src/Renderer/Shader/Shader.cpp
     src/Renderer/Shader/ShaderLoader.cpp
-)
+        src/Editor/FreeroamEditorView.cpp src/Editor/FreeroamEditorView.h src/Editor/GridEditorView.cpp src/Editor/GridEditorView.h src/Editor/PlayerEditorView.cpp src/Editor/PlayerEditorView.h src/Editor/EditorCamera.cpp src/Editor/EditorCamera.h)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")

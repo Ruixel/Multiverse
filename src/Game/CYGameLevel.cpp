@@ -11,11 +11,12 @@
 #include "../Renderer/Renderer.h"
 #include "../Editor/OldFormat/OldFormatUtil.h"
 #include "../Editor/CYObjects/MeshBuilder.h"
+#include "../Editor/FreeroamEditorView.h"
 
 // Constructor / Init Objects
 CYGameLevel::CYGameLevel(sf::Vector2u screenResolution)
 	: m_octree(512)
-	, m_editorGui(&m_floor, &m_camera.m_cameraState)
+	, m_editorGui(&m_floor, m_camera)
 	, m_screenRes(screenResolution)
 {
 	// Test the sphere primitive (TEMP)
@@ -30,7 +31,7 @@ void CYGameLevel::initGUI(nk_context * ctx)
 
 void CYGameLevel::initCamera(Renderer & renderer)
 {
-	renderer.initScene(m_camera);
+	renderer.initScene(*m_camera.get());
 }
 
 // Load from the Old CY Format (REGEX) from local server
@@ -226,7 +227,7 @@ void CYGameLevel::renderGeneric(Renderer & renderer)
 	renderer.draw(sphere);
 
 	m_octree.drawOctree(renderer);
-	if (m_camera.m_cameraState == CameraType::GRID) 
+	if (m_camera.get()->getType() == CameraType::GRID)
 		renderer.draw(m_levelGrid.getModel());
 }
 
@@ -240,7 +241,7 @@ void CYGameLevel::renderGUIs(Renderer & renderer)
 void CYGameLevel::input(Controller & controller)
 {
 	// Move camera according to player input
-	m_camera.input(controller);
+	m_camera.get()->input(controller);
 
 	m_mousePosition = controller.getMousePositionRelativeToWindow();
 }
@@ -249,7 +250,7 @@ void CYGameLevel::input(Controller & controller)
 void CYGameLevel::update(float deltaTime)
 {
 	// Mouse Ray (test)
-	MouseRay::Ray mRay = MouseRay::calculateMouseRay(m_mousePosition, m_screenRes, m_camera);
+	MouseRay::Ray mRay = MouseRay::calculateMouseRay(m_mousePosition, m_screenRes, *m_camera.get());
 	m_debug.add3DVector("Ray Origin", mRay.origin);
 	m_debug.add3DVector("Ray Direction", mRay.direction);
 	
@@ -267,11 +268,11 @@ void CYGameLevel::update(float deltaTime)
 
 	// Collision Detection & Response
 	// TODO: Replace w/ better algorithm
-	if (!cameraCollision(m_camera))
-		m_camera.applyVelocity();
+	if (!cameraCollision(*m_camera.get()))
+		m_camera.get()->applyVelocity();
 
 	// Update camera after applying calculations to get accurate view matrix
-	m_camera.update(deltaTime, m_debug, m_floor, m_octree);
+	m_camera.get()->update(deltaTime, m_debug, m_floor, m_octree);
 
 	m_levelGrid.update(m_floor);
 }
@@ -365,7 +366,7 @@ bool CYGameLevel::cameraCollision(Camera & camera)
 bool CYGameLevel::selectObjectFromMouse()
 {
 	// Create ray cast
-	MouseRay::Ray mRay = MouseRay::calculateMouseRay(m_mousePosition, m_screenRes, m_camera);
+	MouseRay::Ray mRay = MouseRay::calculateMouseRay(m_mousePosition, m_screenRes, *m_camera.get());
 	std::vector<GeoOctree::NodeDistance> rayNodes = m_octree.getNodesIntersectingRayOrdered(mRay);
 
 	// TODO: Put in separate function?
@@ -445,5 +446,5 @@ bool CYGameLevel::selectObjectFromMouse()
 
 Camera & CYGameLevel::getCamera()
 {
-	return m_camera;
+	return *m_camera.get();
 }

@@ -76,3 +76,8 @@ const glm::mat4& Camera::getViewMatrix() const
 {
 	return m_viewMatrix;
 }
+
+const Transform& Camera::getTransformation() const
+{
+    return m_transform;
+}

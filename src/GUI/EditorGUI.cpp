@@ -1,8 +1,8 @@
 #include "EditorGUI.h"
 
-EditorGUI::EditorGUI(u8* cFloor, CameraType* cType)
+EditorGUI::EditorGUI(u8 *cFloor, EditorCamera& eView)
 	: m_currentFloor(cFloor)
-	, m_cameraType(cType)
+	, m_camera(&eView)
 {
 	bg.r = 1.0f, bg.g = 1.f, bg.b = 1.f, bg.a = 1.0f;
 }
@@ -76,7 +76,7 @@ void EditorGUI::update(float deltaTime)
 	if (nk_begin(ctx, "View", nk_rect(30, 720-37-30, 120*3 + 25, 37),
 		NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR))
 	{
-		CameraType currentType = *m_cameraType;
+		CameraType currentType = m_camera->get()->getType();
 
 		nk_layout_row_begin(ctx, NK_STATIC,25,3);
 
@@ -87,7 +87,7 @@ void EditorGUI::update(float deltaTime)
 				nk_style_push_color(ctx, &ctx->style.button.border_color, nk_rgb(255, 255, 255));
 			
 			if (nk_button_label(ctx, buttonLabel.c_str())) {
-				*m_cameraType = cType;
+				m_camera->changeCamera(cType);
 			}
 
 			if (currentType == cType) nk_style_pop_color(ctx);

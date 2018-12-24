@@ -14,7 +14,7 @@
 #include "../Editor/GeoOctree.h"
 #include "../Util/MouseRay.h"
 #include "../Renderer/Model.h"
-#include "../Editor/EditorView.h"
+#include "../Editor/EditorCamera.h"
 #include "../Editor/Grid.h"
 
 #include "../GUI/EditorGUI.h"
@@ -69,7 +69,7 @@ class CYGameLevel
 
     private:
 		// Editor 
-		EditorView m_camera;
+		EditorCamera m_camera;
 		std::shared_ptr<CYGeneric> m_selectedObject;
 
 		// Level Floors

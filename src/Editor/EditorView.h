@@ -12,37 +12,18 @@
 
 #include "../Game/PlayerMovement.h"
 
-enum class CameraType { FREEROAM, GRID, PLAYER };
+enum class CameraType { FREEROAM, GRID, PLAYER, NONE };
 
 class EditorView : public Camera
 {
 public:
-	//EditorView();
+    EditorView(const Transform& cam_transform)
+    {
+        this->m_transform = cam_transform;
+    }
 
-	CameraType m_cameraState = CameraType::FREEROAM;
+	virtual void input(const Controller& controller) = 0;
+	virtual void update(float dt, DebugLogGUI& d_gui, u8 floor, GeoOctree& octr) = 0;
 
-	virtual void input(const Controller& controller);
-	virtual void update(float dt, DebugLogGUI& d_gui, u8 floor, GeoOctree& octr);
-
-	void inputFreeroam(const Controller& controller);
-	void inputGridview(const Controller& controller);
-	void inputPlayer(const Controller& controller);
-
-	void updateGridview(float dt, u8 floor);
-	void updatePlayer(float dt, DebugLogGUI& d_gui, GeoOctree& octr);
-
-private:
-	// Mouse Drag
-	bool m_grid_m2Down = false;
-	sf::Vector2i m_grid_startPos;
-	glm::vec3 m_grid_dragStartVec;
-
-	// Mouse Rotation
-	bool m_grid_m3Down = false;
-	//MouseRay::Ray m_grid_startRay;
-	glm::vec3 m_grid_origin;
-
-	// Player Movement
-	PlayerMovement playerCollider;
+    virtual CameraType getType() { return CameraType::NONE; }
 };
-
