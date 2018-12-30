@@ -225,6 +225,7 @@ void CYGameLevel::partiallyRenderFloors(Renderer & renderer)
 void CYGameLevel::renderGeneric(Renderer & renderer)
 {
 	renderer.draw(sphere);
+	m_physSim.renderTestScene(renderer);
 
 	m_octree.drawOctree(renderer);
 	if (m_camera.get()->getType() == CameraType::GRID)

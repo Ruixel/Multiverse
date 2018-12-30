@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(Subverse)
+project(Multiverse)
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_LIBRARIES -lstdc++fs)
-
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 find_package(SFML REQUIRED audio network graphics window system)
+
+# Change to your bullet engine directory
+set(BULLET_ROOT /home/adrian/Programming/bullet3-master)
+
 
 #Include directory
 include_directories(src/Dependencies/)
@@ -31,7 +34,7 @@ set(SOURCES
     src/Input/KeyboardController.cpp
     src/ResourceManager/ResourceHolder.cpp
     src/States/StatePlaying.cpp
-        src/Editor/BoundingBox.cpp
+    src/Editor/BoundingBox.cpp
     src/Editor/GeoOctree.cpp
     src/Editor/Grid.cpp
     src/Editor/OldFormat/OldFormatUtil.cpp
@@ -48,7 +51,7 @@ set(SOURCES
     src/Renderer/OpenGLErrorCheck.cpp
     src/Renderer/Shader/Shader.cpp
     src/Renderer/Shader/ShaderLoader.cpp
-        src/Editor/FreeroamEditorView.cpp src/Editor/FreeroamEditorView.h src/Editor/GridEditorView.cpp src/Editor/GridEditorView.h src/Editor/PlayerEditorView.cpp src/Editor/PlayerEditorView.h src/Editor/EditorCamera.cpp src/Editor/EditorCamera.h)
+    src/Editor/FreeroamEditorView.cpp src/Editor/FreeroamEditorView.h src/Editor/GridEditorView.cpp src/Editor/GridEditorView.h src/Editor/PlayerEditorView.cpp src/Editor/PlayerEditorView.h src/Editor/EditorCamera.cpp src/Editor/EditorCamera.h src/Editor/EditorPhysicsSimulator.cpp src/Editor/EditorPhysicsSimulator.h)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
@@ -81,3 +84,10 @@ target_link_libraries(${PROJECT_NAME} ${LIB_DIR}/libnfd.a ${GTK3_LIBRARIES})
 
 # Link SFML libraries & its dependancies with the executable
 target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+
+# Link Bullet libraries
+include_directories(${BULLET_ROOT}/src)
+target_link_libraries(${PROJECT_NAME}
+        ${BULLET_ROOT}/bin/libBulletDynamics_gmake_x64_release.a
+        ${BULLET_ROOT}/bin/libBulletCollision_gmake_x64_release.a
+        ${BULLET_ROOT}/bin/libLinearMath_gmake_x64_release.a)

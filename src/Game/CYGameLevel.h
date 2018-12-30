@@ -7,6 +7,7 @@
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/vector.hpp>
 
+#include "../Editor/EditorPhysicsSimulator.h"
 #include "../Editor/CYObjects/CYObjectProperties.h"
 #include "../Editor/CYObjects/CYGeneric.h"
 #include "WorldTextures.h"
@@ -84,6 +85,7 @@ class CYGameLevel
 		std::vector<std::shared_ptr<CYGeneric>> m_geometry;
 		GeoOctree m_octree;
 		Mesh cached_FloorMesh;
+		EditorPhysicsSimulator m_physSim;
 
         LevelHeader m_header;
 		WorldTextures m_textures;
