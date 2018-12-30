@@ -2,7 +2,7 @@
 
 if [ "$1" = "release" ]
 then
-    ./bin/release/Subverse
+    ./bin/release/multiverse
 else
-    ./bin/debug/Subverse
+    ./bin/debug/multiverse
 fi
