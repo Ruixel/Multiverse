@@ -45,4 +45,6 @@ libglad.a
 YouGL
 .vscode/
 
+lib/
+
 fname.py
