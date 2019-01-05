@@ -57,6 +57,8 @@ void Renderer::renderScene(const Camera& camera)
     int drawCalls = 0;
     for (auto renderData : m_renderData) {
         renderData->bind();
+		m_shader.setParameter("modelMatrix", renderData->getModelMatrix());
+
         glDrawElements(renderData->getMode(), renderData->getIndicesCount(), GL_UNSIGNED_INT, nullptr);
         //std::cout << "Call: " << drawCalls++ << " Indices: " << renderData->getIndicesCount() << '\n';
     }

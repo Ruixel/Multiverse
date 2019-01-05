@@ -26,6 +26,8 @@ class Model : public NonCopyable
 
 		void destroyModel();
 
+		void setModelMatrix(glm::mat4& mat);
+		glm::mat4 getModelMatrix();
     private:
         RenderData m_renderData;
         std::array<GLuint, 5> m_buffers;

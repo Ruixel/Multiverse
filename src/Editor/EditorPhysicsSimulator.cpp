@@ -45,10 +45,11 @@ void EditorPhysicsSimulator::renderTestScene(Renderer & renderer)
 		btTransform sphereT;
 		ball.m_rbody->getMotionState()->getWorldTransform(sphereT);
 
-		btVector3 pos       = sphereT.getOrigin();
-		glm::vec3 glm_pos   = glm::vec3(pos.getX(), pos.getY(), pos.getZ());
-		float radius        = ((btSphereShape*)ball.m_rbody->getCollisionShape())->getRadius();
-		ball.render(renderer, glm_pos, radius);
+		btVector3 pos = sphereT.getOrigin();
+		glm::vec3 glm_pos = glm::vec3(pos.getX(), pos.getY(), pos.getZ());
+		float radius = ((btSphereShape*)ball.m_rbody->getCollisionShape())->getRadius();
+		ball.render(renderer, this->bulletToGlm(sphereT));
+
 	}
 }
 
@@ -58,31 +59,44 @@ void EditorPhysicsSimulator::launchBall(glm::vec3 ballPos, glm::vec3 ballDirecti
 	ballDirection = glm::normalize(ballDirection);
 
 	// Convert glm::vec3 to btVector3
-	btVector3 pos(-ballPos.x, ballPos.y, -ballPos.z);
-	btVector3 dir(-ballDirection.x, ballDirection.y, -ballDirection.z);
+	btVector3 pos(ballPos.x, ballPos.y, ballPos.z);
+	btVector3 dir(ballDirection.x, ballDirection.y, ballDirection.z);
 
 	btTransform tS;    
 	tS.setIdentity();
 	tS.setOrigin(pos);
 	btMotionState* motionS = new btDefaultMotionState(tS);
 
-	btCollisionShape* tempSphereShape = new btSphereShape(btScalar(.2f));
+	float r = .2f;
+	btCollisionShape* tempSphereShape = new btBoxShape(btVector3(.2f, .2f, .2f));
 	m_collisionShapes.push_back(tempSphereShape);
 
 	btVector3 inertia(btVector3(1, 1, 1));
 	tempSphereShape->calculateLocalInertia(btScalar(1.2f), inertia);
 
 	btRigidBody::btRigidBodyConstructionInfo info(1.2f, motionS, tempSphereShape, inertia);
-	info.m_restitution = 0.7f;
+	info.m_restitution = 0.3f;
 	info.m_friction = 1.5f;
 	btRigidBody* ballRB = new btRigidBody(info);
 
 	dynamicsWorld->addRigidBody(ballRB);
 	ballRB->setLinearVelocity(dir * 5);
 
-	EditorPhysicsBouncingBall b(ballRB);
-	m_balls.push_back(b);
+	EditorPhysicsBouncingBall b(ballRB, 0.2f);
+	m_balls.emplace_back(std::move(b));
 	
+}
+
+glm::mat4 EditorPhysicsSimulator::bulletToGlm(const btTransform& t)
+{
+	btQuaternion rotation = t.getRotation();
+	btVector3 transform = t.getOrigin();
+
+	glm::mat4 mat;
+	mat = glm::translate(mat, glm::vec3(transform.getX(), transform.getY(), transform.getZ()));
+	mat = glm::rotate(mat, (float)rotation.getAngle(), glm::vec3(rotation.getAxis().getX(), rotation.getAxis().getY(), rotation.getAxis().getZ()));
+
+	return mat;
 }
 
 // Destroy

@@ -5,6 +5,7 @@
 #include "../Renderer/Renderer.h"
 #include "EditorPhysicsBouncingBall.h"
 #include <vector>
+#include "glm/mat4x4.hpp"
 
 #define BT_USE_DOUBLE_PRECISION
 
@@ -23,6 +24,7 @@ public:
     void renderTestScene(Renderer & renderer);
 
 	void launchBall(glm::vec3 ballPos, glm::vec3 ballDirection);
+	glm::mat4 bulletToGlm(const btTransform& t);
 
 private:
     btDiscreteDynamicsWorld* dynamicsWorld;

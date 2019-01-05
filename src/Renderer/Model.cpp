@@ -14,26 +14,35 @@ Model::Model(Model&& model)
 	m_renderData.indicesCount	= model.m_renderData.indicesCount;
 	m_renderData.textureID		= model.m_renderData.textureID;
 	m_renderData.m_mode			= model.m_renderData.m_mode;
+	m_renderData.m_modelMatrix	= model.m_renderData.m_modelMatrix;
 
-    model.m_renderData.vao			= 0;
-	model.m_renderData.indicesCount = 0;
-	model.m_renderData.textureID	= 0;
-	model.m_renderData.m_mode		= GL_POLYGON;
+    model.m_renderData.vao			 = 0;
+	model.m_renderData.indicesCount  = 0;
+	model.m_renderData.textureID	 = 0;
+	model.m_renderData.m_mode		 = GL_POLYGON;
+	model.m_renderData.m_modelMatrix = glm::mat4();
+	model.destroyModel();
 }
 
 Model& Model::operator=(Model&& model)
 {
-	m_renderData.vao			= model.m_renderData.vao;
-	m_renderData.indicesCount	= model.m_renderData.indicesCount;
-	m_renderData.textureID		= model.m_renderData.textureID;
-	m_renderData.m_mode			= model.m_renderData.m_mode;
+	if (this != &model)
+	{
+		m_renderData.vao			= model.m_renderData.vao;
+		m_renderData.indicesCount	= model.m_renderData.indicesCount;
+		m_renderData.textureID		= model.m_renderData.textureID;
+		m_renderData.m_mode			= model.m_renderData.m_mode;
+		m_renderData.m_modelMatrix	= model.m_renderData.m_modelMatrix;
 
-    m_buffers = std::move(model.m_buffers);
+		m_buffers = std::move(model.m_buffers);
 
-    model.m_renderData.vao = 0;
-	model.m_renderData.indicesCount = 0;
-	model.m_renderData.textureID = 0;
-	model.m_renderData.m_mode = GL_POLYGON;
+		model.m_renderData.vao			 = 0;
+		model.m_renderData.indicesCount  = 0;
+		model.m_renderData.textureID	 = 0;
+		model.m_renderData.m_mode		 = GL_POLYGON;
+		model.m_renderData.m_modelMatrix = glm::mat4();
+		model.destroyModel();
+	}
 
     return *this;
 }
@@ -56,6 +65,16 @@ void Model::destroyModel()
 	m_renderData.vao = 0;
 	m_renderData.indicesCount = 0;
 	m_renderData.textureID = 0;
+}
+
+void Model::setModelMatrix(glm::mat4 & mat)
+{
+	m_renderData.m_modelMatrix = mat;
+}
+
+glm::mat4 Model::getModelMatrix()
+{
+	return m_renderData.m_modelMatrix;
 }
 
 void Model::create(Mesh& mesh)

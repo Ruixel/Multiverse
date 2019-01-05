@@ -75,8 +75,8 @@ namespace Primitives
 			m.vertices.push_back(radius * cos((b) / 180.f * M_PI) - origin.z);
 
 			// Unnecessary info 
-			m.texCoords.insert(m.texCoords.end(), { 0.0f, 0.0f, 1.0f });
-			m.normals.insert(m.normals.end(), { 1.0f, 0.0f, 0.0f });
+			m.texCoords.insert(m.texCoords.end(), { 1.0f, 1.0f });
+			m.normals.insert(m.normals.end(), { 1.0f, 1.0f, 1.0f });
 			m.colour.insert(m.colour.end(), { 1.0f, 0.0f, 0.0f });
 		};
 	
