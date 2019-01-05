@@ -3,6 +3,7 @@
 #include "btBulletDynamicsCommon.h"
 #include "../Renderer/Primitives.h"
 #include "../Renderer/Renderer.h"
+#include "EditorPhysicsBouncingBall.h"
 #include <vector>
 
 #define BT_USE_DOUBLE_PRECISION
@@ -21,6 +22,8 @@ public:
     void update(float dt);
     void renderTestScene(Renderer & renderer);
 
+	void launchBall(glm::vec3 ballPos, glm::vec3 ballDirection);
+
 private:
     btDiscreteDynamicsWorld* dynamicsWorld;
 
@@ -32,5 +35,5 @@ private:
     btAlignedObjectArray<btCollisionShape*> m_collisionShapes;
     std::vector<btRigidBody*> m_rigidBodies;
 
-    btRigidBody* sphereRigidBody;
+	std::vector<EditorPhysicsBouncingBall> m_balls;
 };

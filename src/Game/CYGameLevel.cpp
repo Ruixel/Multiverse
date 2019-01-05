@@ -224,7 +224,7 @@ void CYGameLevel::partiallyRenderFloors(Renderer & renderer)
 
 void CYGameLevel::renderGeneric(Renderer & renderer)
 {
-	renderer.draw(sphere);
+	//renderer.draw(sphere);
 	m_physSim.renderTestScene(renderer);
 
 	m_octree.drawOctree(renderer);
@@ -259,6 +259,10 @@ void CYGameLevel::update(float deltaTime)
 	m_debug.addMessage("You are looking at " + std::to_string(n) + " nodes");
 
 	//this->selectObjectFromMouse();
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		m_physSim.launchBall(m_camera.get()->getPositon(), mRay.direction);
+
+	m_physSim.update(deltaTime);
 
 	// GUI Update
 	m_editorGui.update(deltaTime);
@@ -370,7 +374,6 @@ bool CYGameLevel::selectObjectFromMouse()
 	MouseRay::Ray mRay = MouseRay::calculateMouseRay(m_mousePosition, m_screenRes, *m_camera.get());
 	std::vector<GeoOctree::NodeDistance> rayNodes = m_octree.getNodesIntersectingRayOrdered(mRay);
 
-	// TODO: Put in separate function?
 	int objCount = 0;
 	std::optional<std::shared_ptr<CYGeneric>> obj;
 	for (auto& node : rayNodes)

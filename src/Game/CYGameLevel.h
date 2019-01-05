@@ -71,6 +71,7 @@ class CYGameLevel
     private:
 		// Editor 
 		EditorCamera m_camera;
+		EditorPhysicsSimulator m_physSim;
 		std::shared_ptr<CYGeneric> m_selectedObject;
 
 		// Level Floors
@@ -85,7 +86,6 @@ class CYGameLevel
 		std::vector<std::shared_ptr<CYGeneric>> m_geometry;
 		GeoOctree m_octree;
 		Mesh cached_FloorMesh;
-		EditorPhysicsSimulator m_physSim;
 
         LevelHeader m_header;
 		WorldTextures m_textures;
